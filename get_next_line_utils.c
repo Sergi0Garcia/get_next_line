@@ -6,11 +6,56 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:54:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/06/15 13:17:25 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:55:07 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(void)
+#include "get_next_line.h"
+
+size_t	ft_strlen(const char *s)
 {
-	return (0);
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+void clean_buffer(char *buff)
+{
+	int	i;
+
+	i = 0;
+	while (buff[i])
+	{
+		buff[i] = 0;
+	}
+	buff[i] = 0;
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	size_t	strlen;
+	size_t	rlen;
+	char	*str;
+
+	if (!s)
+		return (NULL);
+	strlen = ft_strlen(s);
+	rlen = len;
+	if (len > strlen)
+		rlen = strlen;
+	str = (char *)malloc(sizeof(char) * (rlen + 1));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (start < strlen && s[start + i] && i < rlen)
+	{
+		str[i] = s[start + i];
+		i++;
+	}
+	str[i] = 0;
+	return (str);
 }
