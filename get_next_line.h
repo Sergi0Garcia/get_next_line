@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:55:06 by segarcia          #+#    #+#             */
-/*   Updated: 2022/06/16 14:47:18 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/06/17 13:47:42 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <limits.h>
 
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *s);

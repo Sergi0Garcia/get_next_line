@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:54:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/06/16 14:55:07 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/06/17 12:57:30 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ size_t	ft_strlen(const char *s)
 
 	i = 0;
 	while (s[i])
+	{
 		i++;
+	}
 	return (i);
 }
 
@@ -31,7 +33,6 @@ void clean_buffer(char *buff)
 	{
 		buff[i] = 0;
 	}
-	buff[i] = 0;
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
