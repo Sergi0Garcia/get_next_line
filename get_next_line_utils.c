@@ -6,23 +6,23 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:54:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/06/17 12:57:30 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/06/20 13:57:05 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
+	size_t	ft_strlen(const char *s)
 	{
-		i++;
+		size_t	i;
+
+		i = 0;
+		while (s && s[i])
+		{
+			i++;
+		}
+		return (i);
 	}
-	return (i);
-}
 
 void clean_buffer(char *buff)
 {
