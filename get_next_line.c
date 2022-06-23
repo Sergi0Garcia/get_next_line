@@ -5,44 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/14 09:55:03 by segarcia          #+#    #+#             */
-/*   Updated: 2022/06/22 13:35:52 by segarcia         ###   ########.fr       */
+/*   Created: 2022/06/23 11:32:26 by segarcia          #+#    #+#             */
+/*   Updated: 2022/06/23 14:42:31 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-int	buffer_allocation(int fd, char *buffer, char **stash)
-{
-	int i;
-	int sz;
-
-	i = 0;
-	clean_buffer(buffer);
-	sz = read(fd, buffer, BUFFER_SIZE);
-	if (sz < 0)
-		return (0);
-	if (sz == 0)
-		return (2);
-	*stash = ft_strjoin(*stash, buffer, sz);
-	// printf("stash: %s\n", *stash);
-	return (1);
-}
-
-int	check_current_stash(char *stash)
-{
-	int i;
-
-	i = 0;
-
-	while(stash && ft_strlen(stash) && stash[i] )
-	{
-		if (stash[i] == 10)
-			return (i);
-		i++;
-	}
-	return (0);
-}
 
 int	init(char **buffer, char **stash)
 {
@@ -53,8 +21,61 @@ int	init(char **buffer, char **stash)
 		*buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
 		if (!*buffer)
 			return (0);
+		clean_buffer(*buffer);
 	}
 	return (1);
+}
+
+int	check_current_stash(char *stash)
+{
+	int i;
+
+	i = 0;
+	// printf("1: ft_strlen [%i]\n", (int)ft_strlen(stash));
+	while(stash && stash[i] && ft_strlen(stash))
+	{
+		// printf("i: %i\n", i);
+		if (stash[i] == 10)
+			return (i);
+		i++;
+	}
+	// printf("Bye\n");
+	return (0);
+}
+
+int	buffer_allocation(int fd, char **buffer, char **stash)
+{
+	int i;
+	int sz;
+	char	*tmp;
+
+	i = 0;
+	// printf("x\n");
+	clean_buffer(*buffer);
+	// printf("xx\n");
+	sz = read(fd, *buffer, BUFFER_SIZE);
+	// printf("SZ: %i - BUFFER: %c \n", sz, *buffer[0]);
+	// printf("xxx\n");
+	if (sz < 0)
+		return (0);
+	if (sz == 0)
+		return (2);
+	// printf("(int)ft_strlen(stash): %i\n", (int)ft_strlen(*stash));
+	tmp = ft_strjoin(*stash, *buffer, sz);
+	// printf("tmp: %s\n", tmp);
+	*stash = tmp;
+	free(tmp);
+	tmp = NULL;
+	// printf("Len[%i] - Stash: %s\n", (int)ft_strlen(*stash), *stash);
+	// printf("xxxxx\n");
+	return (1);
+}
+
+void moveptr(char **line, char *res)
+{
+	*line = res;
+	free(res);
+	res = NULL;
 }
 
 char	*get_next_line(int fd)
@@ -62,47 +83,72 @@ char	*get_next_line(int fd)
 	char			*line = NULL;
 	char			*buffer = NULL;
 	static char		*stash = NULL;
-
 	int				brk_line;
-	int				alloc;
-	int				real_brkl;
+	int				end_file;
+	int 			alloc;
+	char			*tmp;
 
-	brk_line = 0;
+	end_file = 0;
 	alloc = 0;
-
+	// printf("1\n");
 	if (BUFFER_SIZE <= 0 || fd < 0 || fd > OPEN_MAX)
 		return (NULL);
 	if (!init(&buffer, &stash))
 		return (NULL);
+	// printf("2\n");
 	brk_line = check_current_stash(stash);
-	while(!brk_line)
+	// printf("3\n");
+	// printf("brkline1: %i\n", brk_line);
+	if (brk_line)
 	{
-		// printf("x\n");
-		alloc = buffer_allocation(fd, buffer, &stash);
-		if (!alloc)
+		// printf("o-\n");
+		line = ft_substr(stash, 0, brk_line  + 1);
+		// printf("o\n");
+		stash = ft_substr(stash, brk_line + 1, ft_strlen(stash));
+		// printf("z\n");
+		free(buffer);
+		buffer = NULL;
+		return (line);
+	}
+	// printf("4\n");
+	while(!brk_line && !end_file)
+	{
+		// printf("5\n");
+		// printf("PLine: %p\n", line);
+		// printf("PBuffer: %p\n", buffer);
+		// printf("PStash: %p\n", stash);
+		alloc = buffer_allocation(fd, &buffer, &stash);
+		// printf("6\n");
+		// printf("alloc: %i\n", alloc);
+		if (alloc == 0)
 		{
 			free(buffer);
+			buffer = NULL;
+			free(line);
+			line = NULL;
 			return (NULL);
 		}
-		if (alloc == 1)
-		{
-			brk_line = check_current_stash(stash);
-			real_brkl = brk_line;
-		}
+		// printf("7\n");
 		if (alloc == 2)
-		{
-			brk_line = 1;
-			real_brkl = ft_strlen(stash);
-		}
+			end_file = 1;
+		if (alloc == 1)
+			brk_line = check_current_stash(stash);
 	}
+	// printf("PLine: %p\n", line);
+	// printf("PBuffer: %p\n", buffer);
+	// printf("w\n");
 	if (ft_strlen(stash))
 	{
-		// printf("here\n");
-		line = ft_substr(stash, 0, real_brkl  + 1);
-		// printf("Line: %s\n", line);
-		stash = ft_substr(stash, real_brkl + 1, ft_strlen(stash));
+		// printf("8\n");
+		// printf("q\n");
+		if (end_file)
+			brk_line = ft_strlen(stash);
+		tmp = ft_substr(stash, 0, brk_line  + 1);
+		moveptr(&line, tmp);
+		stash = ft_substr(stash, brk_line + 1, ft_strlen(stash));
 	}
 	free(buffer);
+	buffer = NULL;
 	return (line);
 }
 
@@ -111,20 +157,21 @@ char	*get_next_line(int fd)
 // 	char		*res;
 // 	int			fd;
 
-// 	fd = open("./tmp.txt", O_RDONLY);
+// 	fd = open("./gnlTester/files/nl", O_RDONLY);
+// 	// fd = open("./tmp.txt", O_RDONLY);
 // 	res = get_next_line(fd);
 // 	printf("output 1 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
+// 	// res = get_next_line(fd);
+// 	// printf("output 2 = %s-\n", res);
+// 	// res = get_next_line(fd);
+// 	// printf("output 2 = %s-\n", res);
+// 	// res = get_next_line(fd);
+// 	// printf("output 2 = %s-\n", res);
+// 	// res = get_next_line(fd);
+// 	// printf("output 2 = %s-\n", res);
+// 	// res = get_next_line(fd);
+// 	// printf("output 2 = %s-\n", res);
+// 	// res = get_next_line(fd);
+// 	// printf("output 2 = %s-\n", res);
 // 	return (0);
 // }
