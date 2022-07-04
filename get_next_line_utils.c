@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:54:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/06/23 14:39:02 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/04 11:37:35 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,9 @@ size_t	ft_strlen(char *s)
 	size_t	i;
 
 	i = 0;
-	// printf("p %p\n", s);
 	while (s && s[i])
 		i++;
 	return (i);
-}
-
-void clean_buffer(char *buff)
-{
-	int	i;
-
-	i = 0;
-	while (buff[i])
-		buff[i] = 0;
 }
 
 char	*ft_substr(char *s, unsigned int start, size_t len)
@@ -42,13 +32,11 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 
 	if (!s)
 		return (NULL);
-	// printf("wo\n");
 	strlen = ft_strlen(s);
 	rlen = len;
 	if (len > strlen)
 		rlen = strlen;
 	str = (char *)malloc(sizeof(char) * (rlen + 1));
-	// printf("PStr SUBSTR: %p \n", str);
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -60,7 +48,8 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	str[i] = 0;
 	return (str);
 }
-char	*ft_strjoin(char *s1, char *s2, int len)
+
+char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	len1;
 	size_t	len2;
@@ -70,17 +59,13 @@ char	*ft_strjoin(char *s1, char *s2, int len)
 	if (!s1 || !s2)
 		return (NULL);
 	len1 = ft_strlen((char *)s1);
-	// printf("len1: %i\n", (int)len1);
-	len2 = (size_t)len;
-	// printf("len2: %i\n", (int)len2);
+	len2 = ft_strlen((char *)s2);
 	str = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
-	// printf("PStr JOIN: %p \n", str);
 	if (!str)
 		return (NULL);
 	i = 0;
 	while (i < len1)
 	{
-		// printf("Copying letter: %c\n", s1[i]);
 		str[i] = s1[i];
 		i++;
 	}
@@ -90,7 +75,5 @@ char	*ft_strjoin(char *s1, char *s2, int len)
 		i++;
 	}
 	str[i] = 0;
-	// printf("str: %s\n", str);
-	// printf("completed strjoin\n");
 	return (str);
 }

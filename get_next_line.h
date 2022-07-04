@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:55:06 by segarcia          #+#    #+#             */
-/*   Updated: 2022/06/23 14:23:58 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/04 11:37:37 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ size_t	ft_strlen(char *s);
 void	clean_buffer(char *buff);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 void	clean_str(char *s, int len);
-char	*ft_strjoin(char *s1, char *s2, int len);
+char	*ft_strjoin(char *s1, char *s2);
 void	ft_copy(char *dest, char *src, int size);
 
 #endif
