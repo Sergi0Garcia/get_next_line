@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:54:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/04 12:46:11 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/05 11:32:39 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,29 @@ size_t	ft_strlen(char *s)
 	while (s && s[i])
 		i++;
 	return (i);
+}
+
+char	*ft_strdup(char *src)
+{
+	size_t	len;
+	int		i;
+	char	*dest;
+
+	len = ft_strlen(src);
+	dest = malloc(len + 1);
+	i = 0;
+	if (dest == 0)
+		return (0);
+	else
+	{
+		while (src[i])
+		{
+			dest[i] = src[i];
+			i++;
+		}
+		dest[i] = '\0';
+		return (dest);
+	}
 }
 
 char	*ft_substr(char *s, unsigned int start, size_t len)
@@ -45,7 +68,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 		str[i] = s[start + i];
 		i++;
 	}
-	str[i] = 0;
+	str[i] = '\0';
 	return (str);
 }
 
@@ -56,6 +79,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	i;
 	char	*str;
 
+	if(s1 ==  NULL)
+		s1 = "";
 	if (!s1 || !s2)
 		return (NULL);
 	len1 = ft_strlen((char *)s1);
@@ -74,6 +99,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		str[i] = s2[i - len1];
 		i++;
 	}
-	str[i] = 0;
+	str[i] = '\0';
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:11:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/04 13:39:03 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/05 11:32:44 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,17 @@ int	check_current_stash(char *stash)
 	return (-1);
 }
 
+
 char	*get_next_line(int fd)
 {
 	char			*line;
-	char			buf[BUFFER_SIZE + 1];
-	static char		*stash = "";
-	char			*tmp;
+	char			*buf;
+	static char		*stash;
 	int				ret;
 	int				brk_line;
 	int				real_brkline;
+	char 			*tmp;
+	char 			*tmp2;
 
 
 	brk_line = -1;
@@ -44,50 +46,61 @@ char	*get_next_line(int fd)
 	if (BUFFER_SIZE <= 0 || fd < 0 || fd > OPEN_MAX)
 		return (NULL);
 	brk_line = check_current_stash(stash);
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	while (brk_line == -1 && ret > 0)
 	{
 		ret = read(fd, buf, BUFFER_SIZE);
 		if (ret == -1)
+		{
+			free(buf);
 			return (NULL);
+		}
 		if (ret == 0)
 		{
 			if (!ft_strlen(stash))
+			{
+				free(buf);
 				return (NULL);
+			}
 			break ;
 		}
-		buf[ret] = 0;
+		buf[ret] = '\0';
 		tmp = stash;
 		stash = ft_strjoin(tmp, buf);
+		free(tmp);
 		brk_line = check_current_stash(stash);
 		if (brk_line != -1)
 			break ;
 	}
+	free(buf);
 	real_brkline = brk_line;
 	if (real_brkline == -1)
 		real_brkline = ft_strlen(stash);
-	line = ft_substr(stash, 0, real_brkline + 1);
+	tmp2 = stash;
+	line = ft_substr(tmp2, 0, real_brkline + 1);
 	tmp = stash;
 	stash = ft_substr(tmp, real_brkline + 1, ft_strlen(tmp));
+	free(tmp);
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	char		*res;
-// 	int			fd;
+int	main(void)
+{
+	char		*res;
+	int			fd;
 
-// 	fd = open("./gnlTester/files/nl", O_RDONLY);
-// 	// fd = open("./tmp.txt", O_RDONLY);
-// 	res = get_next_line(fd);
-// 	printf("output 1 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
-// 	res = get_next_line(fd);
-// 	printf("output 2 = %s-\n", res);
-// 	system("leaks a.out");
-// 	return (0);
-// }
+	// fd = open("/Users/segarcia/Desktop/42/get_next_line_gh/gnlTester/files/nl", O_RDONLY);
+	fd = open("./tmp.txt", O_RDONLY);
+	res = get_next_line(fd);
+	printf("output 1 = %s-\n", res);
+	res = get_next_line(fd);
+	printf("output 2 = %s-\n", res);
+	res = get_next_line(fd);
+	printf("output 3 = %s-\n", res);
+	res = get_next_line(fd);
+	printf("output 4 = %s-\n", res);
+	res = get_next_line(fd);
+	printf("output 5 = %s-\n", res);
+	system("leaks a.out");
+	return (0);
+}
