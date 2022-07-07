@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:55:06 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/07 12:20:57 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/07 14:16:27 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char	*get_next_line(int fd);
 size_t	ft_strlen(char *s);
 void	clean_buffer(char *buff);
 char	*ft_substr(char *s, unsigned int start, size_t len, int need_free);
+int		get_nl_idx(char *ptr);
 char	*ft_strchr(char *s, int c);
 char	*ft_strdup(char *src);
 void	clean_str(char *s, int len);

@@ -6,12 +6,26 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:54:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/07 13:24:43 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/07 14:16:12 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <string.h>
+
+int	get_nl_idx(char *ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr && ptr[i])
+	{
+		if (ptr[i] == 10)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
 
 size_t	ft_strlen(char *s)
 {
@@ -44,36 +58,6 @@ char	*ft_strdup(char *src)
 		dest[i] = '\0';
 		return (dest);
 	}
-}
-
-char	*ft_substr(char *s, unsigned int start, size_t len, int need_free)
-{
-	size_t	i;
-	size_t	strlen;
-	size_t	rlen;
-	char	*str;
-
-	if (!s || s[0] == 0)
-		return (NULL);
-	strlen = ft_strlen(s);
-	rlen = len;
-	if (need_free)
-		rlen = rlen - len;
-	// if (len > strlen)
-	// 	rlen = strlen;
-	str = (char *)malloc(sizeof(char) * (rlen + 1));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (start < strlen && s[start + i] && i < rlen)
-	{
-		str[i] = s[start + i];
-		i++;
-	}
-	str[i] = '\0';
-	if (need_free == 1)
-		free(s);
-	return (str);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
