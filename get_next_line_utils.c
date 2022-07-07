@@ -6,12 +6,18 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:54:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/07 14:16:12 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/07 14:31:45 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <string.h>
+
+char	*return_and_free(char *ptr)
+{
+	free(ptr);
+	return (NULL);
+}
 
 int	get_nl_idx(char *ptr)
 {
@@ -37,7 +43,7 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
-char	*ft_strdup(char *src)
+static char	*ft_strdup(char *src)
 {
 	size_t	len;
 	int		i;
@@ -69,8 +75,6 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if(s1 ==  NULL)
 		s1 = ft_strdup("");
-	if (!s1 || !s2)
-		return (NULL);
 	len1 = ft_strlen((char *)s1);
 	len2 = ft_strlen((char *)s2);
 	str = (char *)malloc(sizeof(char) * (len1 + len2 + 1));

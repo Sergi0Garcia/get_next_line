@@ -6,12 +6,11 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:29:06 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/07 14:16:01 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/07 14:36:54 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 static char	*ft_get_next_stash(char *stash)
 {
@@ -25,21 +24,14 @@ static char	*ft_get_next_stash(char *stash)
 	while (stash[brk_idx] && stash[brk_idx] != '\n')
 		brk_idx++;
 	if (!stash[brk_idx])
-	{
-		free(stash);
-		return (NULL);
-	}
+		return (return_and_free(stash));
 	str_len = ft_strlen(stash);
 	next_stash = (char *)malloc(sizeof(char) * (str_len - brk_idx + 1));
 	if (!next_stash)
 		return (NULL);
 	brk_idx++;
-	while(stash[brk_idx])
-	{
-		next_stash[i] = stash[brk_idx];
-		brk_idx++;
-		i++;
-	}
+	while (stash[brk_idx])
+		next_stash[i++] = stash[brk_idx++];
 	next_stash[i] = '\0';
 	free(stash);
 	return (next_stash);
@@ -57,14 +49,14 @@ static char	*ft_get_line(char *stash)
 	brk_idx = get_nl_idx(stash);
 	if (brk_idx == -1)
 	{
-		if(!ft_strlen(stash))
+		if (!ft_strlen(stash))
 			return (NULL);
 		brk_idx = ft_strlen(stash);
 	}
 	str = (char *)malloc(sizeof(char) * brk_idx + 2);
 	if (!str)
 		return (NULL);
-	while(stash[i] && i < brk_idx)
+	while (stash[i] && i < brk_idx)
 	{
 		str[i] = stash[i];
 		i++;
@@ -89,14 +81,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	read_nbr = BUFFER_SIZE;
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	while(read_nbr > 0 && get_nl_idx(stash) == -1)
+	while (read_nbr > 0 && get_nl_idx(stash) == -1)
 	{
 		read_nbr = read(fd, buffer, BUFFER_SIZE);
 		if (read_nbr == -1)
-		{
-			free(buffer);
-			return (NULL);
-		}
+			return (return_and_free(buffer));
 		buffer[read_nbr] = '\0';
 		stash = ft_strjoin(stash, buffer);
 	}
