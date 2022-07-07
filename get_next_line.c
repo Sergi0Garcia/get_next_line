@@ -5,82 +5,118 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/04 09:11:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/05 11:32:44 by segarcia         ###   ########.fr       */
+/*   Created: 2022/07/07 11:29:06 by segarcia          #+#    #+#             */
+/*   Updated: 2022/07/07 13:52:39 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
-#include <string.h>
 
-int	check_current_stash(char *stash)
+static int	get_nl_idx(char *ptr)
 {
 	int	i;
 
 	i = 0;
-	while (stash && stash[i])
+	while (ptr && ptr[i])
 	{
-		if (stash[i] == 10)
+		if (ptr[i] == 10)
 			return (i);
 		i++;
 	}
 	return (-1);
 }
 
+static char	*ft_get_next_stash(char *stash)
+{
+	int		i;
+	int		brk_idx;
+	int		str_len;
+	char	*next_stash;
+
+	i = 0;
+	brk_idx = 0;
+	while (stash[brk_idx] && stash[brk_idx] != '\n')
+		brk_idx++;
+	if (!stash[brk_idx])
+	{
+		free(stash);
+		return (NULL);
+	}
+	str_len = ft_strlen(stash);
+	next_stash = (char *)malloc(sizeof(char) * (str_len - brk_idx + 1));
+	if (!next_stash)
+		return (NULL);
+	brk_idx++;
+	while(stash[brk_idx])
+	{
+		next_stash[i] = stash[brk_idx];
+		brk_idx++;
+		i++;
+	}
+	next_stash[i] = '\0';
+	free(stash);
+	return (next_stash);
+}
+
+static char	*ft_get_line(char *stash)
+{
+	int		i;
+	int		brk_idx;
+	char	*str;
+
+	i = 0;
+	brk_idx = get_nl_idx(stash);
+	if (!stash[i])
+		return (NULL);
+	if (brk_idx == -1)
+	{
+		if(!ft_strlen(stash))
+			return (NULL);
+		brk_idx = ft_strlen(stash);
+	}
+	str = (char *)malloc(sizeof(char) * brk_idx + 2);
+	if (!str)
+		return (NULL);
+	while(stash[i] && i < brk_idx + 1)
+	{
+		str[i] = stash[i];
+		i++;
+	}
+	if (stash[i])
+	{
+		str[i] = stash[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
 
 char	*get_next_line(int fd)
 {
 	char			*line;
-	char			*buf;
+	char			*buffer;
 	static char		*stash;
-	int				ret;
-	int				brk_line;
-	int				real_brkline;
-	char 			*tmp;
-	char 			*tmp2;
+	int				read_nbr;
 
-
-	brk_line = -1;
-	ret = BUFFER_SIZE;
 	if (BUFFER_SIZE <= 0 || fd < 0 || fd > OPEN_MAX)
 		return (NULL);
-	brk_line = check_current_stash(stash);
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	while (brk_line == -1 && ret > 0)
+	read_nbr = BUFFER_SIZE;
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	while(read_nbr > 0 && get_nl_idx(stash) == -1)
 	{
-		ret = read(fd, buf, BUFFER_SIZE);
-		if (ret == -1)
+		read_nbr = read(fd, buffer, BUFFER_SIZE);
+		if (read_nbr == -1)
 		{
-			free(buf);
+			free(buffer);
 			return (NULL);
 		}
-		if (ret == 0)
-		{
-			if (!ft_strlen(stash))
-			{
-				free(buf);
-				return (NULL);
-			}
-			break ;
-		}
-		buf[ret] = '\0';
-		tmp = stash;
-		stash = ft_strjoin(tmp, buf);
-		free(tmp);
-		brk_line = check_current_stash(stash);
-		if (brk_line != -1)
-			break ;
+		buffer[read_nbr] = '\0';
+		stash = ft_strjoin(stash, buffer);
 	}
-	free(buf);
-	real_brkline = brk_line;
-	if (real_brkline == -1)
-		real_brkline = ft_strlen(stash);
-	tmp2 = stash;
-	line = ft_substr(tmp2, 0, real_brkline + 1);
-	tmp = stash;
-	stash = ft_substr(tmp, real_brkline + 1, ft_strlen(tmp));
-	free(tmp);
+	free(buffer);
+	line = ft_get_line(stash);
+	stash = ft_get_next_stash(stash);
 	return (line);
 }
 
@@ -89,8 +125,8 @@ int	main(void)
 	char		*res;
 	int			fd;
 
-	// fd = open("/Users/segarcia/Desktop/42/get_next_line_gh/gnlTester/files/nl", O_RDONLY);
-	fd = open("./tmp.txt", O_RDONLY);
+	fd = open("/Users/segarcia/Desktop/42/get_next_line_gh/gnlTester/files/41_with_nl", O_RDONLY);
+	// fd = open("./tmp.txt", O_RDONLY);
 	res = get_next_line(fd);
 	printf("output 1 = %s-\n", res);
 	res = get_next_line(fd);

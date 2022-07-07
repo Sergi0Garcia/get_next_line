@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:54:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/05 11:32:39 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/07 13:24:43 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,21 @@ char	*ft_strdup(char *src)
 	}
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len, int need_free)
 {
 	size_t	i;
 	size_t	strlen;
 	size_t	rlen;
 	char	*str;
 
-	if (!s)
+	if (!s || s[0] == 0)
 		return (NULL);
 	strlen = ft_strlen(s);
 	rlen = len;
-	if (len > strlen)
-		rlen = strlen;
+	if (need_free)
+		rlen = rlen - len;
+	// if (len > strlen)
+	// 	rlen = strlen;
 	str = (char *)malloc(sizeof(char) * (rlen + 1));
 	if (!str)
 		return (NULL);
@@ -69,6 +71,8 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 		i++;
 	}
 	str[i] = '\0';
+	if (need_free == 1)
+		free(s);
 	return (str);
 }
 
@@ -80,7 +84,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*str;
 
 	if(s1 ==  NULL)
-		s1 = "";
+		s1 = ft_strdup("");
 	if (!s1 || !s2)
 		return (NULL);
 	len1 = ft_strlen((char *)s1);
@@ -100,5 +104,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		i++;
 	}
 	str[i] = '\0';
+	free(s1);
 	return (str);
 }
