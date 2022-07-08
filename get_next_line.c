@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:29:06 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/08 14:45:31 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/08 14:46:58 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static char	*ft_get_line(char *stash)
 
 char	*get_next_line(int fd)
 {
-	char			*line = NULL;
+	char			*line;
 	char			*buffer;
 	static char		*stash;
 	int				read_nbr;
