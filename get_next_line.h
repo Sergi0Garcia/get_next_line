@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:55:06 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/07 14:29:07 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:40:50 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 # include <stdlib.h>
 
 char	*get_next_line(int fd);
-char	*return_and_free(char *ptr);
-int		get_nl_idx(char *ptr);
 size_t	ft_strlen(char *s);
+int		get_nl_idx(char *ptr);
 char	*ft_strjoin(char *s1, char *s2);
+void	cpystr_increment(char *s1, char *s2, size_t *num);
 
 #endif

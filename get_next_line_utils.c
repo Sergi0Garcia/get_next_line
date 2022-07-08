@@ -6,17 +6,20 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 09:54:35 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/07 14:31:45 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:41:25 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <string.h>
 
-char	*return_and_free(char *ptr)
+size_t	ft_strlen(char *s)
 {
-	free(ptr);
-	return (NULL);
+	size_t	i;
+
+	i = 0;
+	while (s && s[i])
+		i++;
+	return (i);
 }
 
 int	get_nl_idx(char *ptr)
@@ -33,20 +36,18 @@ int	get_nl_idx(char *ptr)
 	return (-1);
 }
 
-size_t	ft_strlen(char *s)
+void	cpystr_increment(char *s1, char *s2, size_t *num)
 {
-	size_t	i;
-
-	i = 0;
-	while (s && s[i])
-		i++;
-	return (i);
+	if (!s1 || !s2)
+		return ;
+	s1[*num] = s2[*num];
+	*num = *num + 1;
 }
 
 static char	*ft_strdup(char *src)
 {
 	size_t	len;
-	int		i;
+	size_t	i;
 	char	*dest;
 
 	len = ft_strlen(src);
@@ -57,10 +58,7 @@ static char	*ft_strdup(char *src)
 	else
 	{
 		while (src[i])
-		{
-			dest[i] = src[i];
-			i++;
-		}
+			cpystr_increment(dest, src, &i);
 		dest[i] = '\0';
 		return (dest);
 	}
@@ -73,7 +71,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	i;
 	char	*str;
 
-	if(s1 ==  NULL)
+	if (!s1)
 		s1 = ft_strdup("");
 	len1 = ft_strlen((char *)s1);
 	len2 = ft_strlen((char *)s2);
@@ -82,10 +80,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	i = 0;
 	while (i < len1)
-	{
-		str[i] = s1[i];
-		i++;
-	}
+		cpystr_increment(str, s1, &i);
 	while (i < len1 + len2)
 	{
 		str[i] = s2[i - len1];
