@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:29:06 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/08 14:46:58 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/08 14:52:25 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,20 +103,3 @@ char	*get_next_line(int fd)
 	stash = ft_update_stash(stash);
 	return (line);
 }
-
-// int main ()
-// {
-// 	int		fd;
-// 	char 	*res;
-
-// 	fd = open("/Users/segarcia/Desktop/42/get_next_line_gh/tmp.txt", O_RDONLY);
-// 	while (1)
-// 	{
-// 		res = get_next_line(fd);
-// 		if (res == NULL)
-// 			break;
-// 		printf("Res: %s\n", res);
-// 		free(res);
-// 	}
-// 	system("leaks a.out");
-// }
