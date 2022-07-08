@@ -6,11 +6,12 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:29:06 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/08 11:47:09 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/08 14:45:31 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 static char	*ft_update_stash(char *stash)
 {
@@ -69,9 +70,7 @@ static char	*ft_get_line(char *stash)
 	str = (char *)malloc(sizeof(char) * brk_idx + 2);
 	if (!str)
 		return (NULL);
-	while (stash[i] && (int)i < brk_idx)
-		cpystr_increment(str, stash, &i);
-	if (stash[i])
+	while (stash[i] && (int)i <= brk_idx)
 		cpystr_increment(str, stash, &i);
 	str[i] = '\0';
 	return (str);
@@ -79,7 +78,7 @@ static char	*ft_get_line(char *stash)
 
 char	*get_next_line(int fd)
 {
-	char			*line;
+	char			*line = NULL;
 	char			*buffer;
 	static char		*stash;
 	int				read_nbr;
@@ -104,3 +103,20 @@ char	*get_next_line(int fd)
 	stash = ft_update_stash(stash);
 	return (line);
 }
+
+// int main ()
+// {
+// 	int		fd;
+// 	char 	*res;
+
+// 	fd = open("/Users/segarcia/Desktop/42/get_next_line_gh/tmp.txt", O_RDONLY);
+// 	while (1)
+// 	{
+// 		res = get_next_line(fd);
+// 		if (res == NULL)
+// 			break;
+// 		printf("Res: %s\n", res);
+// 		free(res);
+// 	}
+// 	system("leaks a.out");
+// }
