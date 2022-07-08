@@ -6,7 +6,7 @@
 /*   By: segarcia <segarcia@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:29:06 by segarcia          #+#    #+#             */
-/*   Updated: 2022/07/08 11:43:28 by segarcia         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:47:09 by segarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*ft_update_stash(char *stash)
 	return (next_stash);
 }
 
-int	is_valid(char *stash)
+static int	is_valid_line(char *stash)
 {
 	int	i;
 	int	brk_idx;
@@ -62,7 +62,7 @@ static char	*ft_get_line(char *stash)
 
 	i = 0;
 	brk_idx = 0;
-	if (!is_valid(stash))
+	if (!is_valid_line(stash))
 		return (NULL);
 	while (stash[brk_idx] && stash[brk_idx] != '\n')
 		brk_idx++;
